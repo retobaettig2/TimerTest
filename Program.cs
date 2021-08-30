@@ -1,6 +1,8 @@
-﻿using System;
-using System.Timers;
-using System.Threading;
+﻿/*
+Dotnet Timer Tests
+29.8.21, Reto Bättig
+*/
+using System;
 
 // See also Multi Media Timers if you want better resolution:
 // https://stackoverflow.com/questions/24839105/high-resolution-timer-in-c-sharp
@@ -11,16 +13,15 @@ namespace TimerTest
 
     class MainLoop
     {
+        private GarbageCollectorTest gc;
         public void run()
         {
+            gc = new GarbageCollectorTest(100, 1024*1024);
+            
             var t = new IntervalTimer(1, Handler);
             while (true)
             {
-                for (var a = 0; a < 1000000; a++)
-                {
-                    // Busy Loop to stress system
-                    if (a==12345) { a++;}
-                }
+                gc.Iterate();
             }
         }
 
@@ -28,7 +29,7 @@ namespace TimerTest
         {
             if (t.Statistics.IntervalCount % 300 == 0)
             {
-                Console.WriteLine("{0:HH:mm:ss.fff} {1}", DateTime.Now, t.Statistics);
+                Console.WriteLine("{0:HH:mm:ss.fff} {1} \n    {2}", DateTime.Now, t.Statistics, gc);
             }
         }
     }
