@@ -16,7 +16,7 @@ namespace TimerTest
         private GarbageCollectorTest gc;
         public void run()
         {
-            gc = new GarbageCollectorTest(100, 1024*1024);
+            gc = new GarbageCollectorTest(10000, 1024);
             
             var t = new IntervalTimer(1, Handler);
             while (true)
@@ -30,6 +30,7 @@ namespace TimerTest
             if (t.Statistics.IntervalCount % 300 == 0)
             {
                 Console.WriteLine("{0:HH:mm:ss.fff} {1} \n    {2}", DateTime.Now, t.Statistics, gc);
+                Console.WriteLine(t.Statistics.Hist+"\n");
             }
         }
     }

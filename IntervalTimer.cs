@@ -1,10 +1,10 @@
-﻿using System;
-using System.Timers;
-using System.Threading;
+﻿/*
+Dotnet Timer Tests
+29.8.21, Reto Bättig
+*/
 
-// See also Multi Media Timers if you want better resolution:
-// https://stackoverflow.com/questions/24839105/high-resolution-timer-in-c-sharp
-// Will run only on Windows
+using System;
+using System.Timers;
 
 namespace TimerTest
 {
