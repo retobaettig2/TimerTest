@@ -16,12 +16,12 @@ namespace TimerTest
         private GarbageCollectorTest gc;
         public void run()
         {
-            gc = new GarbageCollectorTest(10000, 1024);
+            //gc = new GarbageCollectorTest(10000, 1024);
             
             var t = new IntervalTimer(1, Handler);
             while (true)
             {
-                gc.Iterate();
+                //gc.Iterate();
             }
         }
 
