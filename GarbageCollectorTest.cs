@@ -10,18 +10,18 @@ using System.Threading;
 namespace TimerTest
 {
     static class GCStats {
-        static long _eaterCount;
+        static long _objectCount;
         public static void inc() {
-            Interlocked.Increment(ref _eaterCount);
+            Interlocked.Increment(ref _objectCount);
         }
         public static void dec() {
             //Muss Thread-Safe sein, weil es vom Garbage-Collector parallel ausgeführt wird!
             //_eaterCount-- ist NICHT Thread-Safe!
-            Interlocked.Decrement(ref _eaterCount);;
+            Interlocked.Decrement(ref _objectCount);;
         }
 
         public static long getActiveCount() {
-            return _eaterCount;
+            return _objectCount;
         }
     }
 
@@ -42,24 +42,24 @@ namespace TimerTest
         }
     }
     public class GarbageCollectorTest {
-        private MemEater[] _eaters;
-        private int _numEaters;
-        private int _eaterSize;
+        private MemEater[] _objects;
+        private int _numObjects;
+        private int _objectSize;
         private long _allocated;
         private long _freed;
 
-        public GarbageCollectorTest(int numEaters, int eaterSize=1024*1024) {
-            _eaters = new MemEater[numEaters];
-            _numEaters = numEaters;
-            _eaterSize = eaterSize;
+        public GarbageCollectorTest(int numObjects, int objectSize=1024*1024) {
+            _objects = new MemEater[numObjects];
+            _numObjects = numObjects;
+            _objectSize = objectSize;
         }
 
         public void Iterate() {
-            for (int i=0; i<_numEaters; i++) {
+            for (int i=0; i<_numObjects; i++) {
                 // Old Eaters are overwritten => they should be collected by the GC eventually
-                if (_eaters[i]!=null) { _freed += _eaterSize; }
-                _eaters[i] = new MemEater(_eaterSize);
-                _allocated += _eaterSize;
+                if (_objects[i]!=null) { _freed += _objectSize; }
+                _objects[i] = new MemEater(_objectSize);
+                _allocated += _objectSize;
             }
         }
 
@@ -69,7 +69,7 @@ namespace TimerTest
                 base.ToString(),
                 _allocated/1024/1024, 
                 _freed/1024/1024, 
-                GCStats.getActiveCount()*_eaterSize/1024/1024);
+                GCStats.getActiveCount()*_objectSize/1024/1024);
         }
 
     }

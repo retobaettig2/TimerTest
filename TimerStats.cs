@@ -20,7 +20,7 @@ namespace TimerTest
 
         public void add(long measurement) {
             int i=0;
-            while (measurement > _binBoundaries[i] && (i<_binBoundaries.Length)) {
+            while ((i<_binBoundaries.Length) && (measurement > _binBoundaries[i])) {
                 i++;
             }
             _bins[i]++;
