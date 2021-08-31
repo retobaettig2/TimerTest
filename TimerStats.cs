@@ -57,7 +57,7 @@ namespace TimerTest
         private long _meanAccumulator;
         
         public TimerStats() {
-            Hist = new Histogram(new long[] { 5, 10, 15, 20, 30, 50, 100, 1000 });
+            Hist = new Histogram(Config.binBoundaries);
             ResetStats();
         }
         public float MeanInterval

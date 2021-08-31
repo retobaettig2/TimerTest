@@ -10,14 +10,22 @@ using System;
 
 namespace TimerTest
 {
-
+    
+    // Simple compile time configuration instead of config file
+    // ToDo: Move to config file
+    public static class Config {
+        public static int updateTimeSeconds = 1;
+        //public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
+        public static long[] binBoundaries = { 5, 10, 15 };
+    }
     class MainLoop
     {
-        private GarbageCollectorTest gc;
+        private GarbageCollectorTest _gc;
+        private DateTime _lastOutput = DateTime.MinValue;
         public void run(int objectcount, int objectsize)
         {
             if (objectcount>0) {
-                gc = new GarbageCollectorTest(objectcount, objectsize);
+                _gc = new GarbageCollectorTest(objectcount, objectsize);
             }
                         
             var t = new IntervalTimer(1, Handler);
@@ -25,18 +33,19 @@ namespace TimerTest
             while (true)
             {
                 if (objectcount>0) {
-                    gc.Iterate();
+                    _gc.Iterate();
                 }
             }
         }
 
         private void Handler(IntervalTimer t)
         {
-            if (t.Statistics.IntervalCount % 300 == 0)
+            if (DateTime.Now.Subtract(_lastOutput).TotalSeconds > Config.updateTimeSeconds)
             {
+                _lastOutput = DateTime.Now;
                 Console.WriteLine("{0:HH:mm:ss.fff} {1}", DateTime.Now, t.Statistics);
-                if (gc!=null) {
-                    Console.WriteLine(gc);
+                if (_gc!=null) {
+                    Console.WriteLine(_gc);
                 }
                 Console.WriteLine(t.Statistics.Hist+"\n");
             }
