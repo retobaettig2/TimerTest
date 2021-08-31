@@ -61,7 +61,7 @@ namespace TimerTest
             }
             finally
             {
-                // 
+                // prevent reentrance
                 Interlocked.Exchange(ref _timerRunning, 0);
             }
 

@@ -26,12 +26,12 @@ namespace TimerTest
     }
 
     class MemEater {
-        private int[] _chunk;
+        private char[] _chunk;
         public MemEater(int size) {
             GCStats.inc();
-            _chunk = new int[size];
+            _chunk = new char[size];
             for (int i=0; i<size; i++) {
-                _chunk[i]=i;
+                _chunk[i]=(char)i;
             }
         }
 
@@ -51,7 +51,7 @@ namespace TimerTest
         public GarbageCollectorTest(int numObjects, int objectSize=1024*1024) {
             _objects = new MemEater[numObjects];
             _numObjects = numObjects;
-            _objectSize = objectSize/sizeof(int);
+            _objectSize = objectSize;
         }
 
         public void Iterate() {

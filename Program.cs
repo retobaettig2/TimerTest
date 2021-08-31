@@ -16,16 +16,18 @@ namespace TimerTest
     public static class Config
     {
         public static int timerDelayms = 1;
-        public static int updateTimeSeconds = 1;
+        public static int updateTimeSeconds = 10;
+        public static int objectCount = 0;
+        public static int objectSize = 0;
         public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
     }
     class MainLoop
     {
         private GarbageCollectorTest _gc;
         private DateTime _lastOutput = DateTime.MinValue;
-        public void run(int objectcount, int objectsize)
+        public void run()
         {
-            _gc = new GarbageCollectorTest(objectcount, objectsize);
+            _gc = new GarbageCollectorTest(Config.objectCount, Config.objectSize);
 
             var t = new IntervalTimer(Config.timerDelayms, Handler);
             //Busy Loop to stress system
@@ -51,25 +53,29 @@ namespace TimerTest
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Testing Dotnet Timer frequency and accuracy");
+            
+            ParseArguments(args);
             Console.WriteLine("Usage: TimerTest [objectcount] [objectsize]");
-            Console.WriteLine("  if object count and size are specified, the program \nis allocating and freeing objects of the given size as fast as possible");
-            Console.WriteLine(" Configuration:");
-            Console.WriteLine(" TimerDelay = {0}ms, UpdateTimeSeconds = {1}", Config.timerDelayms, Config.updateTimeSeconds);
+            Console.WriteLine("   Testing Dotnet Timer frequency and accuracy");
+            Console.WriteLine("   if object count and size are specified, the program");
+            Console.WriteLine("   is allocating and freeing objects of the given size as fast as possible");
+            Console.WriteLine("   Configuration: ");
+            Console.WriteLine("       TimerDelay = {0}ms, UpdateTimeSeconds = {1}", Config.timerDelayms, Config.updateTimeSeconds);
+            Console.WriteLine("       objectcount = {0}, objectsize = {1}", Config.objectCount, Config.objectSize);
             Console.WriteLine("Press <ctrl>-<c> to abort.");
 
-            int objectcount, objectsize;
-            if (args.Length < 1 || !int.TryParse(args[0], out objectcount))
-            {
-                objectcount = 0;
-            }
-            if (args.Length < 2 || !int.TryParse(args[1], out objectsize))
-            {
-                objectsize = 0;
-            }
+            new MainLoop().run();
+        }
 
-            Console.WriteLine("objectcount = {0}, objectsize = {1}", objectcount, objectsize);
-            new MainLoop().run(objectcount, objectsize);
+        public static void ParseArguments(string[] args) {
+            if (args.Length < 1 || !int.TryParse(args[0], out Config.objectCount))
+            {
+                Config.objectCount = 0;
+            }
+            if (args.Length < 2 || !int.TryParse(args[1], out Config.objectSize))
+            {
+                Config.objectSize = 0;
+            }
         }
 
     }
