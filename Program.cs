@@ -15,6 +15,7 @@ namespace TimerTest
     // ToDo: Move to config file
     public static class Config
     {
+        public static int timerDelayms = 1;
         public static int updateTimeSeconds = 1;
         public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
     }
@@ -26,7 +27,7 @@ namespace TimerTest
         {
             _gc = new GarbageCollectorTest(objectcount, objectsize);
 
-            var t = new IntervalTimer(1, Handler);
+            var t = new IntervalTimer(Config.timerDelayms, Handler);
             //Busy Loop to stress system
             while (true)
             {
@@ -53,6 +54,8 @@ namespace TimerTest
             Console.WriteLine("Testing Dotnet Timer frequency and accuracy");
             Console.WriteLine("Usage: TimerTest [objectcount] [objectsize]");
             Console.WriteLine("  if object count and size are specified, the program \nis allocating and freeing objects of the given size as fast as possible");
+            Console.WriteLine(" Configuration:");
+            Console.WriteLine(" TimerDelay = {0}ms, UpdateTimeSeconds = {1}", Config.timerDelayms, Config.updateTimeSeconds);
             Console.WriteLine("Press <ctrl>-<c> to abort.");
 
             int objectcount, objectsize;
