@@ -10,13 +10,13 @@ using System;
 
 namespace TimerTest
 {
-    
+
     // Simple compile time configuration instead of config file
     // ToDo: Move to config file
-    public static class Config {
+    public static class Config
+    {
         public static int updateTimeSeconds = 1;
-        //public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
-        public static long[] binBoundaries = { 5, 10, 15 };
+        public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
     }
     class MainLoop
     {
@@ -24,17 +24,13 @@ namespace TimerTest
         private DateTime _lastOutput = DateTime.MinValue;
         public void run(int objectcount, int objectsize)
         {
-            if (objectcount>0) {
-                _gc = new GarbageCollectorTest(objectcount, objectsize);
-            }
-                        
+            _gc = new GarbageCollectorTest(objectcount, objectsize);
+
             var t = new IntervalTimer(1, Handler);
             //Busy Loop to stress system
             while (true)
             {
-                if (objectcount>0) {
-                    _gc.Iterate();
-                }
+                _gc.Iterate();
             }
         }
 
@@ -44,10 +40,8 @@ namespace TimerTest
             {
                 _lastOutput = DateTime.Now;
                 Console.WriteLine("{0:HH:mm:ss.fff} {1}", DateTime.Now, t.Statistics);
-                if (_gc!=null) {
-                    Console.WriteLine(_gc);
-                }
-                Console.WriteLine(t.Statistics.Hist+"\n");
+                Console.WriteLine(_gc);
+                Console.WriteLine(t.Statistics.Hist + "\n");
             }
         }
     }
@@ -62,15 +56,17 @@ namespace TimerTest
             Console.WriteLine("Press <ctrl>-<c> to abort.");
 
             int objectcount, objectsize;
-            if (args.Length<1 || !int.TryParse(args[0], out objectcount)) {
+            if (args.Length < 1 || !int.TryParse(args[0], out objectcount))
+            {
                 objectcount = 0;
             }
-            if (args.Length<2 || !int.TryParse(args[1], out objectsize)) {
+            if (args.Length < 2 || !int.TryParse(args[1], out objectsize))
+            {
                 objectsize = 0;
             }
-                        
+
             Console.WriteLine("objectcount = {0}, objectsize = {1}", objectcount, objectsize);
-            new MainLoop().run(objectcount, objectsize); 
+            new MainLoop().run(objectcount, objectsize);
         }
 
     }

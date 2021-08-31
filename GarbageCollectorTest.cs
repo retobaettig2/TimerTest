@@ -51,7 +51,7 @@ namespace TimerTest
         public GarbageCollectorTest(int numObjects, int objectSize=1024*1024) {
             _objects = new MemEater[numObjects];
             _numObjects = numObjects;
-            _objectSize = objectSize;
+            _objectSize = objectSize/sizeof(int);
         }
 
         public void Iterate() {

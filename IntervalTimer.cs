@@ -5,12 +5,14 @@ Dotnet Timer Tests
 
 using System;
 using System.Timers;
+using System.Threading;
 
 namespace TimerTest
 {
     public class IntervalTimer
     {
         private System.Timers.Timer _timer;
+        private long _timerRunning = 0;
         private long _lastTimeStamp;
         public delegate void Del(IntervalTimer timer);
         public Del Handler { private get; set; }
@@ -35,24 +37,42 @@ namespace TimerTest
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            var diff = now - _lastTimeStamp;
-            _lastTimeStamp = now;
+            // prevent reentrance
+            long otherRunning = Interlocked.CompareExchange(ref _timerRunning, 1, 0);
+            if (otherRunning == 1)
+            {
+                Statistics.AddReentrance();
+                return;
+            }
 
-            Statistics.AddInterval(diff);
+            try
+            {
+                var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                var diff = now - _lastTimeStamp;
+                _lastTimeStamp = now;
 
-            if (Handler!=null) {
-                Handler(this);
+                Statistics.AddInterval(diff);
+
+                if (Handler != null)
+                {
+                    Handler(this);
+                }
+
+            }
+            finally
+            {
+                // 
+                Interlocked.Exchange(ref _timerRunning, 0);
             }
 
         }
 
         public override string ToString()
         {
-            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3}ms", 
+            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3}ms",
                 base.ToString(),
-                Statistics.MinInterval, 
-                Statistics.MaxInterval, 
+                Statistics.MinInterval,
+                Statistics.MaxInterval,
                 Statistics.MeanInterval);
         }
 

@@ -53,6 +53,7 @@ namespace TimerTest
         public long MaxInterval { get; private set; }
 
         public long IntervalCount { get; private set; }
+        public long ReentranceCount { get; private set; }
 
         private long _meanAccumulator;
         
@@ -80,6 +81,10 @@ namespace TimerTest
             _meanAccumulator = 0;
         }
 
+        public void AddReentrance() {
+            ReentranceCount++;
+        }
+
         public void AddInterval(long interval)
         {
             _meanAccumulator += interval;
@@ -93,11 +98,12 @@ namespace TimerTest
 
         public override string ToString()
         {
-            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3}ms", 
+            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3}ms, Reentered {4} times", 
                 base.ToString(),
                 MinInterval, 
                 MaxInterval, 
-                MeanInterval);
+                MeanInterval,
+                ReentranceCount);
         }
     }
 }
