@@ -12,12 +12,14 @@ namespace TimerTest
     static class GCStats {
         static long _objectCount;
         public static void inc() {
-            Interlocked.Increment(ref _objectCount);
+            //Interlocked.Increment(ref _objectCount);
+            _objectCount++;
         }
         public static void dec() {
             //Muss Thread-Safe sein, weil es vom Garbage-Collector parallel ausgeführt wird!
             //_eaterCount-- ist NICHT Thread-Safe!
-            Interlocked.Decrement(ref _objectCount);;
+            //Interlocked.Decrement(ref _objectCount);;
+            _objectCount--;
         }
 
         public static long getActiveCount() {
