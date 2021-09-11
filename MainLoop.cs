@@ -25,14 +25,25 @@ namespace TimerTest
 
         private void Handler(IntervalTimer t)
         {
-            if (DateTime.Now.Subtract(_lastOutput).TotalSeconds > Config.updateTimeSeconds)
+            if (ItsTimeToUpdateOutput())
             {
-                _lastOutput = DateTime.Now;
                 Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} {t.Statistics}");
                 Console.WriteLine(_gc);
                 Console.WriteLine($"{t.Statistics.Hist}\n");
             }
         }
+
+        private bool ItsTimeToUpdateOutput()
+        {
+            double _timeSinceLastOutput = DateTime.Now.Subtract(_lastOutput).TotalSeconds;
+            if (_timeSinceLastOutput > Config.updateTimeSeconds)
+            {
+                _lastOutput = DateTime.Now;
+                return true;
+            }
+            return false;
+        }
+
     }
 
 }

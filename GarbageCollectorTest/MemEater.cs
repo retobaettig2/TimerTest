@@ -14,7 +14,7 @@ namespace TimerTest
         private char[] _chunk;
         public MemEater(int size)
         {
-            GCStats.inc();
+            GCObjectCounter.inc();
             _chunk = new char[size];
             for (int i = 0; i < size; i++)
             {
@@ -26,7 +26,7 @@ namespace TimerTest
         {
             //ACHTUNG: Diese Methode wird vom Garbage Collector scheinbar parallel aufgerufen!
             //GCStats.dec muss Thread-safe sein ein simples _eaterCount-- funktioniert nicht!!!
-            GCStats.dec();
+            GCObjectCounter.dec();
         }
     }
 

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace TimerTest
 {
-    static class GCStats
+    static class GCObjectCounter
     {
         static long _objectCount;
         public static void inc()

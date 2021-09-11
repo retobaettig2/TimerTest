@@ -28,7 +28,7 @@ namespace TimerTest
         {
             for (int i = 0; i < _numObjects; i++)
             {
-                // Old Eaters are overwritten => they should be collected by the GC eventually
+                // Old objects are overwritten => they should be collected by the GC eventually
                 if (_objects[i] != null) { _freed += _objectSize; }
                 _objects[i] = new MemEater(_objectSize);
                 _allocated += _objectSize;
@@ -41,7 +41,7 @@ namespace TimerTest
                 base.ToString(),
                 _allocated / 1024 / 1024,
                 _freed / 1024 / 1024,
-                GCStats.getActiveCount() * _objectSize / 1024 / 1024);
+                GCObjectCounter.getActiveCount() * _objectSize / 1024 / 1024);
         }
 
     }
