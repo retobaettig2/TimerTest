@@ -30,7 +30,7 @@ namespace TimerTest
             {
                 if (IntervalCount > 0)
                 {
-                    return _meanAccumulator / IntervalCount;
+                    return (float)_meanAccumulator / IntervalCount;
                 }
                 return 0;
             }
@@ -62,11 +62,12 @@ namespace TimerTest
 
         public override string ToString()
         {
-            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3}ms, Reentered {4} times",
+            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3:0.0}ms/{4:0.00}Hz, Reentered {5} times",
                 base.ToString(),
                 MinInterval,
                 MaxInterval,
                 MeanInterval,
+                1000/MeanInterval,
                 ReentranceCount);
         }
     }

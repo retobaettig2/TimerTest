@@ -69,11 +69,7 @@ namespace TimerTest
 
         public override string ToString()
         {
-            return String.Format("{0}: Min interval: {1}ms, Max interval: {2}ms,  Average: {3}ms",
-                base.ToString(),
-                Statistics.MinInterval,
-                Statistics.MaxInterval,
-                Statistics.MeanInterval);
+            return Statistics.ToString();
         }
 
     }
