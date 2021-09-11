@@ -11,49 +11,11 @@ using System;
 namespace TimerTest
 {
 
-    // Simple compile time configuration instead of config file
-    // ToDo: Move to config file
-    public static class Config
-    {
-        public static int timerDelayms = 1;
-        public static int updateTimeSeconds = 10;
-        public static int objectCount = 0;
-        public static int objectSize = 0;
-        public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
-    }
-    class MainLoop
-    {
-        private GarbageCollectorTest _gc;
-        private DateTime _lastOutput = DateTime.MinValue;
-        public void run()
-        {
-            _gc = new GarbageCollectorTest(Config.objectCount, Config.objectSize);
-
-            var t = new IntervalTimer(Config.timerDelayms, Handler);
-            //Busy Loop to stress system
-            while (true)
-            {
-                _gc.Iterate();
-            }
-        }
-
-        private void Handler(IntervalTimer t)
-        {
-            if (DateTime.Now.Subtract(_lastOutput).TotalSeconds > Config.updateTimeSeconds)
-            {
-                _lastOutput = DateTime.Now;
-                Console.WriteLine("{0:HH:mm:ss.fff} {1}", DateTime.Now, t.Statistics);
-                Console.WriteLine(_gc);
-                Console.WriteLine(t.Statistics.Hist + "\n");
-            }
-        }
-    }
-
     class Program
     {
         public static void Main(string[] args)
         {
-            
+
             ParseArguments(args);
             Console.WriteLine("Usage: TimerTest [objectcount] [objectsize]");
             Console.WriteLine("   Testing Dotnet Timer frequency and accuracy");
@@ -67,7 +29,8 @@ namespace TimerTest
             new MainLoop().run();
         }
 
-        public static void ParseArguments(string[] args) {
+        public static void ParseArguments(string[] args)
+        {
             if (args.Length < 1 || !int.TryParse(args[0], out Config.objectCount))
             {
                 Config.objectCount = 0;
