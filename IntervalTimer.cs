@@ -15,13 +15,13 @@ namespace TimerTest
         private long _timerRunning = 0;
         private long _lastTimeStamp;
         public delegate void Del(IntervalTimer timer);
-        public Del Handler { private get; set; }
+        Action<IntervalTimer> _handler;
         public TimerStats Statistics { get; private set; }
 
-        public IntervalTimer(int msDelay, Del handler = null)
+        public IntervalTimer(int msDelay, Action<IntervalTimer> handler = null)
         {
             Statistics = new TimerStats();
-            Handler = handler;
+            _handler = handler;
             _timer = new System.Timers.Timer(msDelay);
             _timer.Elapsed += OnTimedEvent;
             _timer.AutoReset = true;
@@ -53,9 +53,9 @@ namespace TimerTest
 
                 Statistics.AddInterval(diff);
 
-                if (Handler != null)
+                if (_handler != null)
                 {
-                    Handler(this);
+                    _handler(this);
                 }
 
             }
