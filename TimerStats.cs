@@ -41,6 +41,7 @@ namespace TimerTest
             MinInterval = Int64.MaxValue;
             MaxInterval = 0;
             IntervalCount = 0;
+            ReentranceCount = 0;
             _meanAccumulator = 0;
         }
 
