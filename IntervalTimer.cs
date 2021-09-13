@@ -18,7 +18,7 @@ namespace TimerTest
         Action<IntervalTimer> _handler;
         public TimerStats Statistics { get; private set; }
 
-        public IntervalTimer(int msDelay, Action<IntervalTimer> handler = null)
+        public IntervalTimer(int msDelay, Action<Object> handler = null)
         {
             Statistics = new TimerStats();
             _handler = handler;
@@ -69,7 +69,7 @@ namespace TimerTest
 
         public override string ToString()
         {
-            return Statistics.ToString();
+            return $"{Statistics}\n{Statistics.Hist}";
         }
 
     }

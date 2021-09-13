@@ -15,7 +15,8 @@ namespace TimerTest
         {
             _gc = new GarbageCollectorTest(Config.objectCount, Config.objectSize);
 
-            var t = new IntervalTimer(Config.timerDelayms, Handler);
+            //var t = new IntervalTimer(Config.timerDelayms, Handler);
+            var bt = new BusyTimer(20, Handler);
             //Busy Loop to stress system
             while (true)
             {
@@ -23,13 +24,12 @@ namespace TimerTest
             }
         }
 
-        private void Handler(IntervalTimer t)
+        private void Handler(Object t)
         {
             if (ItsTimeToUpdateOutput())
             {
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} {t.Statistics}");
                 Console.WriteLine(_gc);
-                Console.WriteLine($"{t.Statistics.Hist}\n");
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} {t}\n");
             }
         }
 
