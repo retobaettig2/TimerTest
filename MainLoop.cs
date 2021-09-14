@@ -15,8 +15,12 @@ namespace TimerTest
         {
             _gc = new GarbageCollectorTest(Config.objectCount, Config.objectSize);
 
-            //var t = new IntervalTimer(Config.timerDelayms, Handler);
-            var bt = new BusyTimer(20, Handler);
+            if (Config.threadMode) {
+                new BusyTimer(Config.timerDelayms, Handler);
+            } else {
+                new IntervalTimer(Config.timerDelayms, Handler);
+            }
+            
             //Busy Loop to stress system
             while (true)
             {

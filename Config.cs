@@ -11,10 +11,11 @@ namespace TimerTest
     // ToDo: Move to config file
     public static class Config
     {
-        public static int timerDelayms = 1;
+        public static int timerDelayms = 10;
         public static int updateTimeSeconds = 10;
         public static int objectCount = 0;
         public static int objectSize = 0;
+        public static bool threadMode = false;
         public static long[] binBoundaries = { 5, 10, 12, 14, 16, 18, 20, 30, 50, 100, 1000 };
     }
 
